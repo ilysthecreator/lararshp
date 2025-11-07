@@ -1,20 +1,19 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class KodeTindakan extends Model
 {
-    use HasFactory;
+    protected $table = 'kode_tindakan_terapi';
+    protected $primaryKey = 'idkode_tindakan_terapi';
 
-    protected $table = 'kode_tindakan';
-    
-    protected $fillable = [
-        'kode',
-        'nama_tindakan',
-        'deskripsi',
-        'tarif',
-    ];
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'idkategori', 'idkategori');
+    }
+    public function kategoriKlinis()
+    {
+        return $this->belongsTo(KategoriKlinis::class, 'idkategori_klinis', 'idkategori_klinis');
+    }
 }

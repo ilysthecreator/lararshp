@@ -37,7 +37,7 @@
             </div>
             @endif
 
-            <form method="POST" action="{{ route('login.post') }}">
+            <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <!-- Username/Email -->
                 <div style="margin-bottom: 1.5rem;">

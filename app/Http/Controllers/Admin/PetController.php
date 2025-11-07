@@ -10,9 +10,7 @@ class PetController extends Controller
 {
     public function index()
     {
-        // Ambil semua data dengan relasi
-        $pets = Pet::with(['pemilik', 'jenisHewan', 'rasHewan'])->get();
-        
+        $pets = Pet::with(['pemilik.user', 'rasHewan.jenisHewan'])->get();
         return view('admin.pet.index', compact('pets'));
     }
 }

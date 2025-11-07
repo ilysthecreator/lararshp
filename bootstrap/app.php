@@ -11,10 +11,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Registrasi middleware alias
         $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'isAdministrator' => \App\Http\Middleware\isAdministrator::class,
+            'isDokter' => \App\Http\Middleware\isDokter::class,
+            'isPerawat' => \App\Http\Middleware\isPerawat::class,
+            'isResepsionis' => \App\Http\Middleware\isResepsionis::class,
+            'isPemilik' => \App\Http\Middleware\isPemilik::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
+    ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

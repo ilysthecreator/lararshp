@@ -10,35 +10,23 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-    ];
+    protected $table = 'user';
+    protected $primaryKey = 'iduser';
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
+    protected $fillable = [ 'nama', 'email', 'password' ];
+    protected $hidden = [ 'password', 'remember_token' ];
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
-
-    // Relasi dengan Role (jika menggunakan tabel role terpisah)
-    public function roleDetail()
+    public function roleUser()
     {
-        return $this->belongsTo(Role::class, 'role_id');
+        return $this->hasMany(RoleUser::class, 'iduser', 'iduser');
     }
-
-    // Helper method untuk cek role
-    public function isAdmin()
+    public function pemilik()
     {
-        return $this->role === 'admin';
+        return $this->hasOne(Pemilik::class, 'iduser', 'iduser');
     }
 }

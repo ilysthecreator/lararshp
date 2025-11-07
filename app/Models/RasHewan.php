@@ -10,22 +10,22 @@ class RasHewan extends Model
     use HasFactory;
 
     protected $table = 'ras_hewan';
+    protected $primaryKey = 'idras_hewan';
     
     protected $fillable = [
-        'jenis_hewan_id',
+        'idjenis_hewan',
         'nama_ras',
-        'deskripsi',
     ];
 
-    // Relasi dengan JenisHewan
+    public $timestamps = false;
+
     public function jenisHewan()
     {
-        return $this->belongsTo(JenisHewan::class, 'jenis_hewan_id');
+        return $this->belongsTo(JenisHewan::class, 'idjenis_hewan', 'idjenis_hewan');
     }
 
-    // Relasi dengan Pet
     public function pets()
     {
-        return $this->hasMany(Pet::class, 'ras_hewan_id');
+        return $this->hasMany(Pet::class, 'idras_hewan', 'idras_hewan');
     }
 }

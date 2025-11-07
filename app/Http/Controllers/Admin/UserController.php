@@ -10,9 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        // Ambil semua user dengan relasi role (jika ada)
-        $users = User::all();
-        
-        return view('admin.users.index', compact('users'));
+        $users = User::with('roleUser.role')->get();
+        return view('admin.user.index', compact('users'));
     }
 }

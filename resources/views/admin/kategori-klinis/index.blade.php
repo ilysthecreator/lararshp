@@ -1,56 +1,68 @@
 @extends('admin.layout')
 
 @section('title', 'Daftar Kategori Klinis')
-@section('page-title', 'Daftar Kategori Klinis')
+
+@push('styles')
+    <link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+@endpush
 
 @section('content')
-<div class="card">
-    <div class="card-header">
-        <h4><i class="fas fa-stethoscope"></i> Daftar Kategori Klinis</h4>
-        <a href="#" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Tambah Data
-        </a>
-    </div>
-    
-    <div style="overflow-x: auto;">
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>ID</th>
-                    <th>Nama Kategori Klinis</th>
-                    <th>Deskripsi</th>
-                    <th>Dibuat Pada</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($kategoriKlinis as $index => $item)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->id }}</td>
-                    <td><strong>{{ $item->nama_kategori_klinis }}</strong></td>
-                    <td>{{ $item->deskripsi ?? '-' }}</td>
-                    <td>{{ $item->created_at->format('d M Y') }}</td>
-                    <td>
-                        <a href="#" class="btn btn-sm btn-primary">
-                            <i class="fas fa-edit"></i> Edit
-                        </a>
-                        <button class="btn btn-sm" style="background: var(--danger-color); color: white;">
-                            <i class="fas fa-trash"></i> Hapus
-                        </button>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="6" style="text-align: center; padding: 2rem; color: #999;">
-                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
-                        <p>Belum ada data kategori klinis</p>
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Daftar Kategori Klinis</h1>
+        </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Kategori Klinis</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%">
+                    <thead class="thead-light">
+                        <tr>
+                            <th width="5%">No</th>
+                            <th width="15%">ID</th>
+                            <th width="45%">Nama Kategori Klinis</th>
+                            <th width="35%">Tanggal Dibuat</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($kategoriKlinis as $index => $item)
+                        <tr>
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td class="text-center">{{ $item->idkategori_klinis }}</td>
+                            <td><strong>{{ $item->nama_kategori_klinis }}</strong></td>
+                            <td class="text-center">{{ $item->created_at ? $item->created_at->format('d M Y H:i') : '-' }}</td>
+                            </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">Tidak ada data kategori klinis</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
 @endsection
+
+@push('scripts')
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Hanya sisakan fungsionalitas DataTable
+    $('#dataTable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
+        }
+    });
+
+    // Semua script untuk '.btn-edit' dan '.btn-delete' dihapus
+});
+</script>
+@endpush

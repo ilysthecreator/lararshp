@@ -26,9 +26,4 @@ class SiteController extends Controller
     {
         return view('site.struktur');
     }
-
-    public function login()
-    {
-        return view('site.login');
-    }
 }

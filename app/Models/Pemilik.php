@@ -2,25 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pemilik extends Model
 {
-    use HasFactory;
-
+    /**
+     * Nama tabel yang terhubung [cite: 117]
+     */
     protected $table = 'pemilik';
-    
-    protected $fillable = [
-        'nama_pemilik',
-        'alamat',
-        'no_telepon',
-        'email',
-    ];
 
-    // Relasi dengan Pet
-    public function pets()
+    /**
+     * Primary key kustom [cite: 119]
+     */
+    protected $primaryKey = 'idpemilik';
+
+    /**
+     * Kolom yang dapat diisi [cite: 121]
+     * (Kita biarkan sesuai modul, meskipun view kita read-only)
+     */
+    protected $fillable = ['no_wa', 'alamat'];
+
+    /**
+     * Definisikan relasi "belongsTo" ke User [cite: 124-128]
+     * Ini PENTING agar 'pemilik.user' di controller Anda berfungsi.
+     */
+    public function user()
     {
-        return $this->hasMany(Pet::class, 'pemilik_id');
+        // belongsTo(Model, foreign_key, owner_key)
+        return $this->belongsTo(User::class, 'iduser', 'iduser');
     }
 }

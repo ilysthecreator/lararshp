@@ -9,22 +9,21 @@ class JenisHewan extends Model
 {
     use HasFactory;
 
-    protected $table = 'jenis_hewan'; // Sesuaikan dengan nama tabel di database
+    protected $table = 'jenis_hewan';   
+    protected $primaryKey = 'idjenis_hewan';
     
     protected $fillable = [
-        'nama_jenis',
-        'deskripsi',
+        'nama_jenis_hewan',
     ];
+    public $timestamps = false;
 
-    // Relasi dengan RasHewan (jika ada)
     public function rasHewan()
     {
-        return $this->hasMany(RasHewan::class, 'jenis_hewan_id');
+        return $this->hasMany(RasHewan::class, 'idjenis_hewan', 'idjenis_hewan');
     }
-
-    // Relasi dengan Pet (jika ada)
+    
     public function pets()
     {
-        return $this->hasMany(Pet::class, 'jenis_hewan_id');
+        return $this->hasMany(Pet::class, 'idjenis_hewan', 'idjenis_hewan');
     }
 }

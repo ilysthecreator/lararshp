@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') - Admin Panel RSHP UNAIR</title>
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
     <style>
         * {
             margin: 0;
@@ -115,6 +124,7 @@
         .topbar-left h3 {
             color: var(--dark-color);
             font-size: 1.5rem;
+            margin: 0;
         }
 
         .topbar-right {
@@ -144,7 +154,7 @@
         .btn-logout {
             padding: 0.5rem 1.5rem;
             background: var(--danger-color);
-            color: white;
+            color: white !important;
             border: none;
             border-radius: 6px;
             cursor: pointer;
@@ -157,6 +167,8 @@
         .btn-logout:hover {
             background: #c82333;
             transform: translateY(-2px);
+            text-decoration: none;
+            color: white !important;
         }
 
         /* Content Area */
@@ -164,8 +176,8 @@
             padding: 2rem;
         }
 
-        /* Alert Styles */
-        .alert {
+        /* Alert Styles - Custom untuk menghindari konflik dengan Bootstrap */
+        .custom-alert {
             padding: 1rem 1.5rem;
             border-radius: 8px;
             margin-bottom: 1.5rem;
@@ -175,19 +187,19 @@
             gap: 0.75rem;
         }
 
-        .alert-success {
+        .custom-alert.alert-success {
             background: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
 
-        .alert-error {
+        .custom-alert.alert-error {
             background: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
 
-        .btn-close {
+        .btn-close-custom {
             background: none;
             border: none;
             font-size: 1.25rem;
@@ -196,8 +208,37 @@
             transition: opacity 0.3s ease;
         }
 
-        .btn-close:hover {
+        .btn-close-custom:hover {
             opacity: 1;
+        }
+
+        /* DataTables Custom Styling */
+        .dataTables_wrapper {
+            padding-top: 1rem;
+        }
+
+        .dataTables_filter input {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.375rem 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        .dataTables_length select {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.375rem 0.75rem;
+            margin: 0 0.5rem;
+        }
+
+        /* Override Bootstrap table borders if needed */
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dee2e6;
         }
 
         @media (max-width: 768px) {
@@ -217,11 +258,23 @@
             .content {
                 padding: 1rem;
             }
+
+            .topbar {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .topbar-right {
+                width: 100%;
+                justify-content: space-between;
+            }
         }
     </style>
+
+    @stack('styles')
 </head>
 <body>
-    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
             <h2>
@@ -294,9 +347,7 @@
         </ul>
     </aside>
 
-    <!-- Main Content -->
     <div class="main-content">
-        <!-- Topbar -->
         <div class="topbar">
             <div class="topbar-left">
                 <h3>@yield('title')</h3>
@@ -304,35 +355,37 @@
             <div class="topbar-right">
                 <div class="user-info">
                     <div class="user-avatar">
-                        {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
+                        {{-- Mengambil inisial dari nama user --}}
+                        {{ strtoupper(substr(session('user_name', 'U'), 0, 1)) }}
                     </div>
                     <div>
-                        <div style="font-weight: 600; color: var(--dark-color);">{{ Auth::user()->name ?? 'Admin' }}</div>
-                        <div style="font-size: 0.85rem; color: #666;">{{ ucfirst(Auth::user()->role ?? 'admin') }}</div>
+                        <div style="font-weight: 600;">{{ session('user_name', 'User') }}</div>
+                        <div style="font-size: 0.8rem; color: #6c757d;">{{ session('user_role_name', 'Role') }}</div>
                     </div>
                 </div>
-                <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                <a href="{{ route('logout') }}"
+                   class="btn-logout"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
-                    <button type="submit" class="btn-logout">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
                 </form>
             </div>
         </div>
 
-        <!-- Content Area -->
         <div class="content">
             @if(session('success'))
-                <div class="alert alert-success">
+                <div class="custom-alert alert-success">
                     <span><i class="fas fa-check-circle"></i> {{ session('success') }}</span>
-                    <button type="button" class="btn-close" onclick="this.parentElement.remove()">×</button>
+                    <button type="button" class="btn-close-custom" onclick="this.parentElement.remove()">×</button>
                 </div>
             @endif
 
             @if(session('error'))
-                <div class="alert alert-error">
+                <div class="custom-alert alert-error">
                     <span><i class="fas fa-exclamation-circle"></i> {{ session('error') }}</span>
-                    <button type="button" class="btn-close" onclick="this.parentElement.remove()">×</button>
+                    <button type="button" class="btn-close-custom" onclick="this.parentElement.remove()">×</button>
                 </div>
             @endif
 
@@ -340,11 +393,18 @@
         </div>
     </div>
 
+    <!-- jQuery (required for DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Scripts -->
     <script>
         // Auto hide alerts after 5 seconds
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
-                const alerts = document.querySelectorAll('.alert');
+                const alerts = document.querySelectorAll('.custom-alert');
                 alerts.forEach(alert => {
                     alert.style.transition = 'opacity 0.5s ease';
                     alert.style.opacity = '0';
@@ -353,5 +413,7 @@
             }, 5000);
         });
     </script>
+
+    @stack('scripts')
 </body>
 </html>

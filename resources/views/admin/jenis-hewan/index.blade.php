@@ -1,85 +1,75 @@
 @extends('admin.layout')
 
-@section('title', 'Jenis Hewan')
-
-@section('actions')
-<div class="text-end">
-    <a href="{{ route('admin.jenis-hewan.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Tambah Jenis Hewan
-    </a>
-</div>
-@endsection
+@section('title', 'Daftar Jenis Hewan')
 
 @section('content')
-<div class="container-fluid px-0">
-    <div class="card">
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Daftar Jenis Hewan</h1>
+        <a href="{{ route('admin.jenis-hewan.create') }}" class="btn btn-primary btn-icon-split">
+            <span class="icon text-white-50"><i class="fas fa-plus"></i></span>
+            <span class="text">Tambah Jenis Hewan</span>
+        </a>
+    </div>
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @elseif(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Data Jenis Hewan</h6>
+        </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead>
+                <table class="table table-bordered table-hover" id="dataTable" width="100%">
+                    <thead class="thead-light">
                         <tr>
-                            <th scope="col" style="width: 60px">#</th>
-                            <th scope="col">Nama Jenis</th>
-                            <th scope="col">Deskripsi</th>
-                            <th scope="col" style="width: 200px">Tanggal Dibuat</th>
-                            <th scope="col" style="width: 120px">Aksi</th>
+                            <th width="5%">No</th>
+                            <th width="10%">ID</th>
+                            <th width="70%">Nama Jenis Hewan</th>
+                            <th width="15%" class="text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($jenisHewan as $jenis)
+                        @forelse($jenisHewan as $index => $jenis)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td class="fw-semibold">{{ $jenis->nama_jenis }}</td>
-                            <td>{{ $jenis->deskripsi ?? '-' }}</td>
-                            <td>{{ $jenis->created_at ? $jenis->created_at->format('d M Y H:i') : '-' }}</td>
-                            <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="{{ route('admin.jenis-hewan.edit', ['id' => $jenis->id]) }}" 
-                                       class="btn btn-warning" 
-                                       title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <button type="button" 
-                                            class="btn btn-danger" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#deleteModal{{ $jenis->id }}"
-                                            title="Hapus">
-                                        <i class="fas fa-trash"></i>
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td class="text-center">{{ $jenis->idjenis_hewan }}</td>
+                            <td><strong>{{ $jenis->nama_jenis_hewan }}</strong></td>
+                            <td class="text-center">
+                                <button class="btn btn-warning btn-sm btn-edit" 
+                                        data-id="{{ $jenis->idjenis_hewan }}" 
+                                        title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <form action="{{ route('admin.jenis-hewan.destroy', $jenis->idjenis_hewan) }}" 
+                                      method="POST" 
+                                      class="d-inline form-delete">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
+                                        <i class="fas fa-trash-alt"></i>
                                     </button>
-                                </div>
-
-                                <!-- Delete Modal -->
-                                <div class="modal fade" id="deleteModal{{ $jenis->id }}" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Konfirmasi Hapus</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Apakah Anda yakin ingin menghapus jenis hewan <strong>{{ $jenis->nama_jenis }}</strong>?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                <form action="{{ route('admin.jenis-hewan.destroy', $jenis->id) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger">Hapus</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center py-4">
-                                <div class="d-flex flex-column align-items-center">
-                                    <i class="fas fa-paw fa-3x text-secondary mb-3"></i>
-                                    <h6 class="fw-bold text-secondary">Belum ada data jenis hewan</h6>
-                                    <p class="text-muted">Silahkan tambahkan jenis hewan baru</p>
-                                </div>
+                            <td colspan="4" class="text-center text-muted">
+                                <i class="fas fa-info-circle"></i> Tidak ada data jenis hewan
                             </td>
                         </tr>
                         @endforelse
@@ -90,25 +80,98 @@
     </div>
 </div>
 
-<style>
-    .table > :not(caption) > * > * {
-        padding: 1rem 1rem;
-    }
-    
-    .btn-group .btn {
-        padding: 0.375rem 0.75rem;
-    }
-    
-    .modal-header, .modal-footer {
-        padding: 1rem;
-    }
-    
-    .modal-body {
-        padding: 1.5rem;
-    }
-    
-    .table-hover tbody tr:hover {
-        background-color: rgba(0, 102, 204, 0.05);
-    }
-</style>
+<!-- Modal Edit -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Jenis Hewan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="edit_nama_jenis_hewan">Nama Jenis Hewan <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="edit_nama_jenis_hewan" name="nama_jenis_hewan" required>
+                        <small class="form-text text-muted">
+                            Masukkan nama jenis hewan beserta nama ilmiahnya (opsional)
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    // Inisialisasi DataTable
+    $('#dataTable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
+        },
+        "pageLength": 10,
+        "ordering": true,
+        "searching": true
+    });
+
+    // Handle klik tombol edit
+    $('.btn-edit').on('click', function() {
+        var id = $(this).data('id');
+        var url = "{{ url('admin/jenis-hewan') }}/" + id + "/edit";
+        var updateUrl = "{{ url('admin/jenis-hewan') }}/" + id;
+
+        // Set action form
+        $('#editForm').attr('action', updateUrl);
+
+        // Ambil data via AJAX
+        $.get(url, function(data) {
+            // Isi form di modal
+            $('#edit_nama_jenis_hewan').val(data.nama_jenis_hewan);
+
+            // Tampilkan modal
+            $('#editModal').modal('show');
+        }).fail(function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Gagal mengambil data!'
+            });
+        });
+    });
+
+    // Konfirmasi hapus data
+    $('.form-delete').on('submit', function(e) {
+        e.preventDefault();
+        var form = this;
+        Swal.fire({
+            title: 'Anda yakin?',
+            text: "Data yang dihapus tidak dapat dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+});
+</script>
+@endpush
