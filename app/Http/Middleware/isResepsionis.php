@@ -15,6 +15,11 @@ class isResepsionis
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if (auth()->check() && session('user_role') == 4) {
+            return $next($request);
+        }
+
+        // Jika bukan resepsionis, kembalikan ke halaman sebelumnya.
+        return back()->with('error', 'Anda tidak memiliki hak akses Resepsionis.');
     }
 }

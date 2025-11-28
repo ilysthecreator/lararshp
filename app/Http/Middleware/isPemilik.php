@@ -20,10 +20,7 @@ class isPemilik
             return $next($request);
         }
 
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login')->with('error', 'Anda tidak memiliki hak akses Pemilik.');
+        // Jika pengguna sudah login tapi bukan pemilik, kembalikan ke halaman sebelumnya.
+        return back()->with('error', 'Anda tidak memiliki hak akses Pemilik.');
     }
 }

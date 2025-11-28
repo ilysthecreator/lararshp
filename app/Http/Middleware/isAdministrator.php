@@ -15,10 +15,7 @@ class isAdministrator
             return $next($request);
         }
 
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login')->with('error', 'Anda tidak memiliki hak akses Administrator.');
+        // Jika pengguna sudah login tapi bukan admin, kembalikan ke halaman sebelumnya.
+        return back()->with('error', 'Anda tidak memiliki hak akses Administrator.');
     }
 }

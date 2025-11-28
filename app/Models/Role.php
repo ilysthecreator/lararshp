@@ -5,8 +5,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-   protected $table = 'role';
+    protected $table = 'role';
     protected $primaryKey = 'idrole';
+    protected $fillable = [
+        'nama_role',
+    ];
+    public $timestamps = false;
+
     public function roleUsers()
     {
         return $this->hasMany(RoleUser::class, 'idrole', 'idrole');
@@ -14,13 +19,11 @@ class Role extends Model
 
     public function users()
     {
-        return $this->hasManyThrough(
-            User::class,
-            RoleUser::class,
-            'idrole',
-            'iduser',
-            'idrole',
-            'iduser'
+        return $this->belongsToMany(
+            User::class,  
+            'role_user',      
+            'idrole',         
+            'iduser'            
         );
     }
 }

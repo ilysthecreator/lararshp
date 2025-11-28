@@ -12,7 +12,6 @@ class RoleUser extends Model
     protected $table = 'role_user';
     protected $primaryKey = 'idrole_user';
     protected $fillable = [
-        'idrole_user',
         'iduser',
         'idrole',
         'status'

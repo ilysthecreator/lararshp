@@ -56,12 +56,11 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         $user->load('roleUser.role');
-
-        $activeRoleUser = $user->roleUser->where('status', 1)->first();
+        $activeRoleUser = $user->roleUser->where('status', 1)->sortBy('idrole')->first();
 
         if (!$activeRoleUser) {
             Auth::logout();
-            return redirect()->route('login')->withErrors(['email' => 'User tidak memiliki role yang aktif.']);
+            return redirect()->route('login')->withErrors(['email' => 'Login gagal. Akun Anda tidak memiliki peran (role) yang aktif. Silakan hubungi administrator.']);
         }
 
         $role = $activeRoleUser->role;
@@ -88,6 +87,8 @@ class LoginController extends Controller
                 return redirect()->route('resepsionis.dashboard')->with('success', 'Login berhasil!');
             case 5:
                 return redirect()->route('pemilik.dashboard')->with('success', 'Login berhasil!');
+            case 6:
+                return redirect()->route('nama_route_dashboard_baru')->with('success', 'Login berhasil!');
             default:
                 return redirect()->route('home')->with('warning', 'Login berhasil, namun role Anda tidak memiliki halaman dashboard khusus. Silakan hubungi administrator.');
         }

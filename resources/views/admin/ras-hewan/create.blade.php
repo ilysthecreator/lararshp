@@ -1,10 +1,11 @@
 @extends('admin.layout')
-@section('title', 'Tambah Ras Hewan')
-@section('content')
 
+@section('title', 'Tambah Ras Hewan')
+
+@section('content')
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Tambah Ras Hewan</h1>
+        <h1 class="h3 mb-0 text-gray-800">Tambah Ras Hewan Baru</h1>
         <a href="{{ route('admin.ras-hewan.index') }}" class="btn btn-secondary btn-sm">
             <i class="fas fa-arrow-left"></i> Kembali
         </a>
@@ -27,19 +28,15 @@
                             </option>
                         @endforeach
                     </select>
-                    @error('idjenis_hewan')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    @error('idjenis_hewan') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
                 <div class="form-group">
                     <label for="nama_ras">Nama Ras <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control @error('nama_ras') is-invalid @enderror" id="nama_ras" name="nama_ras" value="{{ old('nama_ras') }}" placeholder="Contoh: Golden Retriever" required>
-                    @error('nama_ras')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <input type="text" class="form-control @error('nama_ras') is-invalid @enderror" id="nama_ras" name="nama_ras" value="{{ old('nama_ras') }}" required>
+                    @error('nama_ras') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Simpan Data
+                    <i class="fas fa-save"></i> Simpan Ras Hewan
                 </button>
             </form>
         </div>

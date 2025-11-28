@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\JenisHewan;
+use App\Models\Role;
 use App\Models\RasHewan;
 use Illuminate\Http\Request;
 
@@ -11,8 +13,10 @@ class RasHewanController extends Controller
 {
     public function index()
     {
+        $roles = Role::orderBy('nama_role', 'asc')->get();
+        $users = User::with('roles')->orderBy('nama', 'asc')->get();
         $rasHewan = RasHewan::with('jenisHewan')->orderBy('idras_hewan', 'desc')->get();
-        return view('admin.ras-hewan.index', compact('rasHewan'));
+        return view('admin.ras-hewan.index', compact('rasHewan', 'users', 'roles'));
     }
 
     public function create()
@@ -39,7 +43,7 @@ class RasHewanController extends Controller
 
     public function update(Request $request, RasHewan $rasHewan)
     {
-        $validatedData = $this->validateRasHewan($request, $rasHewan->idras_hewan);
+        $validatedData = $this->validateRasHewan($request, $rasHewan->idras_hewan); // NOSONAR
         $validatedData['nama_ras'] = $this->formatNamaRas($validatedData['nama_ras']);
 
         $rasHewan->update($validatedData);

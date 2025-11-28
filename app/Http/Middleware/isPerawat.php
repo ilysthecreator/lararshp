@@ -15,6 +15,11 @@ class isPerawat
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if (auth()->check() && session('user_role') == 3) {
+            return $next($request);
+        }
+
+        // Jika bukan perawat, kembalikan ke halaman sebelumnya.
+        return back()->with('error', 'Anda tidak memiliki hak akses Perawat.');
     }
 }

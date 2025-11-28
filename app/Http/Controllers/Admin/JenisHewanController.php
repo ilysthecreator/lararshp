@@ -4,13 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\JenisHewan;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class JenisHewanController extends Controller
 {
     public function index()
     {
+        // Menggunakan Eloquent
         $jenisHewan = JenisHewan::orderBy('idjenis_hewan', 'desc')->get();
+        
         return view('admin.jenis-hewan.index', compact('jenisHewan'));
     }
 
@@ -27,53 +31,53 @@ class JenisHewanController extends Controller
         // Format nama jenis
         $validatedData['nama_jenis_hewan'] = $this->formatNamaJenisHewan($validatedData['nama_jenis_hewan']);
 
-        // Simpan data menggunakan helper
-        $this->createJenisHewan($validatedData);
+        JenisHewan::create($validatedData);
 
         return redirect()->route('admin.jenis-hewan.index')
                          ->with('success', 'Data jenis hewan berhasil ditambahkan.');
     }
 
-    public function edit(JenisHewan $jenisHewan)
+    public function edit($id)
     {
-        // Mengembalikan data dalam format JSON untuk digunakan oleh modal
+        $jenisHewan = JenisHewan::findOrFail($id);
+
         return response()->json($jenisHewan);
     }
 
-    public function update(Request $request, JenisHewan $jenisHewan)
+    public function update(Request $request, $id)
     {
         // Validasi data dengan pengecualian untuk data yang sedang diedit
-        $validatedData = $this->validateJenisHewan($request, $jenisHewan->idjenis_hewan);
+        $validatedData = $this->validateJenisHewan($request, $id);
 
         // Format nama jenis
         $validatedData['nama_jenis_hewan'] = $this->formatNamaJenisHewan($validatedData['nama_jenis_hewan']);
 
-        // Update data
+        $jenisHewan = JenisHewan::findOrFail($id);
         $jenisHewan->update($validatedData);
 
         return redirect()->route('admin.jenis-hewan.index')
                          ->with('success', 'Data jenis hewan berhasil diperbarui.');
     }
 
-    public function destroy(JenisHewan $jenisHewan)
+    public function destroy($id)
     {
         try {
-            // Cek relasi sebelum menghapus
-            if ($jenisHewan->rasHewan()->exists()) {
-                return redirect()->route('admin.jenis-hewan.index')
-                                 ->with('error', 'Gagal menghapus! Data ini berelasi dengan data Ras Hewan.');
-            }
-
-            if ($jenisHewan->pets()->exists()) {
-                return redirect()->route('admin.jenis-hewan.index')
-                                 ->with('error', 'Gagal menghapus! Data ini berelasi dengan data Pet.');
-            }
-
+            $jenisHewan = JenisHewan::findOrFail($id);
             $jenisHewan->delete();
 
             return redirect()->route('admin.jenis-hewan.index')
                              ->with('success', 'Data jenis hewan berhasil dihapus.');
+        } catch (QueryException $e) {
+            // Cek jika error disebabkan oleh foreign key constraint
+            if ($e->errorInfo[1] == 1451) {
+                return redirect()->route('admin.jenis-hewan.index')
+                                 ->with('error', 'Gagal menghapus! Data ini masih berelasi dengan data lain di sistem.');
+            }
+            Log::error('QueryException on JenisHewanController@destroy: ' . $e->getMessage());
+            return redirect()->route('admin.jenis-hewan.index')
+                             ->with('error', 'Gagal menghapus data karena masalah database.');
         } catch (\Exception $e) {
+            Log::error('Exception on JenisHewanController@destroy: ' . $e->getMessage());
             return redirect()->route('admin.jenis-hewan.index')
                              ->with('error', 'Gagal menghapus data. Silakan coba lagi.');
         }
@@ -103,12 +107,5 @@ class JenisHewanController extends Controller
     private function formatNamaJenisHewan($nama)
     {
         return ucwords(strtolower(trim($nama)));
-    }
-
-    private function createJenisHewan($data)
-    {
-        return JenisHewan::create([
-            'nama_jenis_hewan' => $data['nama_jenis_hewan'],
-        ]);
     }
 }

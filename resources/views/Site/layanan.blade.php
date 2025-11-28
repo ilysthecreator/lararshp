@@ -121,19 +121,19 @@
         <h2>Layanan Rawat Inap</h2>
         <div class="card-grid">
             <div class="card">
-                <h3><i class="fas fa-bed"></i> Kelas VIP</h3>
+                <h3><i class="fas fa-bed" style="margin-right: 8px; color: var(--primary);"></i> Kelas VIP</h3>
                 <p>Kamar private dengan fasilitas lengkap, AC, TV, kulkas, dan sofa untuk penunggu.</p>
             </div>
             <div class="card">
-                <h3><i class="fas fa-bed"></i> Kelas I</h3>
+                <h3><i class="fas fa-bed" style="margin-right: 8px; color: var(--primary);"></i> Kelas I</h3>
                 <p>Kamar dengan 2 tempat tidur, AC, TV, dan kamar mandi dalam.</p>
             </div>
             <div class="card">
-                <h3><i class="fas fa-bed"></i> Kelas II</h3>
+                <h3><i class="fas fa-bed" style="margin-right: 8px; color: var(--primary);"></i> Kelas II</h3>
                 <p>Kamar dengan 4 tempat tidur, AC, dan fasilitas standar yang nyaman.</p>
             </div>
             <div class="card">
-                <h3><i class="fas fa-bed"></i> Kelas III</h3>
+                <h3><i class="fas fa-bed" style="margin-right: 8px; color: var(--primary);"></i> Kelas III</h3>
                 <p>Kamar dengan beberapa tempat tidur dan fasilitas standar sesuai standar BPJS.</p>
             </div>
         </div>
@@ -148,7 +148,7 @@
 
     <!-- Layanan Unggulan -->
     <div class="content-section">
-        <h2>Layanan Unggulan & Spesialis</h2>
+        <h2>Layanan Unggulan</h2>
         <div class="card-grid">
             <div class="card">
                 <div class="card-icon">
@@ -182,10 +182,10 @@
     </div>
 
     <!-- CTA Section -->
-    <div class="content-section" style="text-align: center; background: linear-gradient(135deg, #0066cc, #00a8e8); color: white;">
-        <h2 style="color: white;">Butuh Bantuan atau Informasi Lebih Lanjut?</h2>
-        <p style="font-size: 1.1rem; margin-bottom: 2rem;">Tim kami siap membantu Anda dengan pelayanan terbaik</p>
-        <a href="{{ route('kontak') }}" class="btn btn-primary" style="background: white; color: #0066cc;">Hubungi Kami</a>
+    <div class="content-section" style="text-align: center; background: var(--surface); border: 1px solid var(--border);">
+        <h2>Butuh Informasi Lebih Lanjut?</h2>
+        <p style="font-size: 16px; margin-bottom: 24px; color: var(--text-secondary);">Tim kami siap membantu Anda dengan pelayanan terbaik</p>
+        <a href="{{ route('kontak') }}" class="btn btn-primary" style="padding: 14px 32px;">Hubungi Kami</a>
     </div>
 </div>
 @endsection

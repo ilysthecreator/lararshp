@@ -15,6 +15,7 @@ class JenisHewan extends Model
     protected $fillable = [
         'nama_jenis_hewan',
     ];
+
     public $timestamps = false;
 
     public function rasHewan()
@@ -24,6 +25,11 @@ class JenisHewan extends Model
     
     public function pets()
     {
-        return $this->hasMany(Pet::class, 'idjenis_hewan', 'idjenis_hewan');
+        return $this->hasManyThrough(
+            Pet::class,
+            RasHewan::class,
+            'idjenis_hewan', // Foreign key on ras_hewan table...
+            'idras_hewan'    // Foreign key on pets table...
+        );
     }
 }

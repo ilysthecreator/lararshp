@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'RSHP UNAIR') - Rumah Sakit Universitas Airlangga</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,46 +14,46 @@
         }
 
         :root {
-            --primary-color: #0066cc;
-            --secondary-color: #00a8e8;
-            --accent-color: #ff6b6b;
-            --dark-color: #1a1a2e;
-            --light-color: #f8f9fa;
-            --text-color: #333;
-            --border-radius: 12px;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --background: #ffffff;
+            --surface: #f8fafc;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            color: var(--text-color);
-            background-color: #fff;
+            color: var(--text-primary);
+            background: var(--background);
+            font-weight: 400;
         }
 
         /* Alert Notification */
         .alert-container {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 24px;
+            right: 24px;
             z-index: 9999;
-            max-width: 400px;
+            max-width: 420px;
         }
 
         .alert {
-            border-radius: var(--border-radius);
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 1rem;
-            border: none;
-            box-shadow: var(--shadow-lg);
+            background: white;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border-left: 3px solid;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            animation: slideInRight 0.3s ease;
+            animation: slideIn 0.3s ease;
         }
 
-        @keyframes slideInRight {
+        @keyframes slideIn {
             from {
                 opacity: 0;
                 transform: translateX(100%);
@@ -65,278 +65,279 @@
         }
 
         .alert-success {
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
-            color: #155724;
-            border-left: 4px solid #28a745;
+            border-left-color: #10b981;
         }
 
         .alert-error {
-            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
-            color: #721c24;
-            border-left: 4px solid #dc3545;
+            border-left-color: #ef4444;
         }
 
         .alert-content {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 12px;
             flex: 1;
         }
 
         .alert-content i {
-            font-size: 1.5rem;
+            font-size: 20px;
+        }
+
+        .alert-success .alert-content i {
+            color: #10b981;
+        }
+
+        .alert-error .alert-content i {
+            color: #ef4444;
         }
 
         .alert-close {
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 20px;
             cursor: pointer;
-            opacity: 0.5;
-            transition: opacity 0.3s ease;
+            opacity: 0.4;
+            transition: opacity 0.2s;
             color: inherit;
             padding: 0;
-            margin-left: 1rem;
+            margin-left: 12px;
         }
 
         .alert-close:hover {
-            opacity: 1;
+            opacity: 0.8;
         }
 
         /* Navbar */
         .navbar {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            padding: 0;
-            box-shadow: var(--shadow);
+            background: white;
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
         .navbar-container {
-            max-width: 1400px;
+            max-width: 1280px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 2rem;
+            padding: 16px 24px;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            color: white;
+            gap: 12px;
+            color: var(--text-primary);
             text-decoration: none;
-            font-weight: 700;
-            font-size: 1.5rem;
+            font-weight: 600;
+            font-size: 20px;
         }
 
         .logo i {
-            font-size: 2rem;
+            font-size: 28px;
+            color: var(--primary);
         }
 
         .nav-menu {
             display: flex;
             list-style: none;
-            gap: 0.5rem;
+            gap: 8px;
             align-items: center;
         }
 
         .nav-menu a {
-            color: white;
+            color: var(--text-secondary);
             text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
             font-weight: 500;
+            font-size: 14px;
         }
 
         .nav-menu a:hover,
         .nav-menu a.active {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
+            color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .nav-menu a i {
+            font-size: 14px;
+            margin-right: 6px;
         }
 
         .nav-toggle {
             display: none;
             background: none;
             border: none;
-            color: white;
-            font-size: 1.5rem;
+            color: var(--text-primary);
+            font-size: 24px;
             cursor: pointer;
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, rgba(0, 102, 204, 0.95), rgba(0, 168, 232, 0.95)),
-                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-            background-size: cover;
-            background-position: center;
-            padding: 5rem 2rem;
+            background: var(--surface);
+            padding: 80px 24px;
             text-align: center;
-            color: white;
         }
 
         .hero-content h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            font-weight: 800;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-size: 42px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
         }
 
         .hero-content p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
+            font-size: 18px;
+            color: var(--text-secondary);
+            font-weight: 400;
         }
 
         /* Container */
         .container {
-            max-width: 1400px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 3rem 2rem;
+            padding: 64px 24px;
         }
 
         /* Content Section */
         .content-section {
             background: white;
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
+            border-radius: 12px;
+            padding: 48px;
+            margin-bottom: 32px;
+            border: 1px solid var(--border);
         }
 
         .content-section h2 {
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 32px;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
         }
 
         /* Card Grid */
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
         }
 
         .card {
             background: white;
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .card-icon {
-            font-size: 3rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 16px;
         }
 
         .card h3 {
-            color: var(--dark-color);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            font-size: 18px;
+            font-weight: 600;
         }
 
         .card p {
-            color: #666;
-            line-height: 1.8;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 14px;
         }
 
-        /* Image/Video Placeholder */
+        /* Media Container */
         .media-container {
-            background: var(--light-color);
-            border-radius: var(--border-radius);
-            padding: 3rem;
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 64px;
             text-align: center;
-            margin: 2rem 0;
-            border: 2px dashed #ddd;
-            transition: all 0.3s ease;
+            margin: 32px 0;
+            border: 2px dashed var(--border);
         }
 
-        /* If the container includes media like an image or video, make the media responsive
-           and visually remove the dashed frame by keeping it subtle. */
         .media-container img,
         .media-container video {
             width: 100%;
-            max-width: 1920px; /* respect desired 1920px width */
+            max-width: 1920px;
             height: auto;
             aspect-ratio: 16/9;
             object-fit: cover;
-            border-radius: 12px;
+            border-radius: 8px;
             display: block;
             margin: 0 auto;
         }
 
-        /* When media is present, reduce padding and soften the border */
         .media-container--media {
-            /* Remove decorative border and background when actual media (video/image) is present */
             padding: 0;
             border: none;
             background: transparent;
         }
 
-        /* Hide placeholder icon/text when real media is displayed */
         .media-container--media i,
         .media-container--media > p {
             display: none;
         }
 
-        .media-container:hover {
-            border-color: var(--primary-color);
-            background: #f0f7ff;
-        }
-
         .media-container i {
-            font-size: 4rem;
-            color: #ccc;
-            margin-bottom: 1rem;
+            font-size: 48px;
+            color: var(--border);
+            margin-bottom: 16px;
         }
 
         .media-container p {
-            color: #999;
-            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-size: 14px;
         }
 
         /* Footer */
         .footer {
-            background: var(--dark-color);
+            background: var(--text-primary);
             color: white;
-            padding: 3rem 2rem 1rem;
-            margin-top: 4rem;
+            padding: 64px 24px 24px;
+            margin-top: 80px;
         }
 
         .footer-content {
-            max-width: 1400px;
+            max-width: 1280px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 48px;
+            margin-bottom: 48px;
         }
 
         .footer-section h3 {
-            margin-bottom: 1rem;
-            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 600;
         }
 
         .footer-section p,
         .footer-section a {
-            color: #ccc;
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             display: block;
-            margin-bottom: 0.5rem;
-            transition: color 0.3s ease;
+            margin-bottom: 12px;
+            font-size: 14px;
+            transition: color 0.2s;
         }
 
         .footer-section a:hover {
@@ -345,49 +346,54 @@
 
         .footer-bottom {
             text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #999;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
         }
 
         /* Buttons */
         .btn {
             display: inline-block;
-            padding: 0.75rem 2rem;
+            padding: 12px 24px;
             border-radius: 8px;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-weight: 500;
+            transition: all 0.2s;
             border: none;
             cursor: pointer;
+            font-size: 14px;
         }
 
         .btn-primary {
-            background: var(--primary-color);
+            background: var(--primary);
             color: white;
         }
 
         .btn-primary:hover {
-            background: #0052a3;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
+            background: var(--primary-light);
         }
 
         .btn-secondary {
-            background: var(--secondary-color);
-            color: white;
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
         }
 
         .btn-secondary:hover {
-            background: #0087c1;
+            background: white;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             .alert-container {
-                right: 10px;
-                left: 10px;
+                right: 16px;
+                left: 16px;
                 max-width: none;
+            }
+
+            .navbar-container {
+                padding: 12px 16px;
             }
 
             .nav-menu {
@@ -396,26 +402,56 @@
                 top: 100%;
                 left: 0;
                 right: 0;
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                background: white;
                 flex-direction: column;
-                padding: 1rem;
+                padding: 16px;
                 gap: 0;
+                border-bottom: 1px solid var(--border);
             }
 
             .nav-menu.active {
                 display: flex;
             }
 
+            .nav-menu a {
+                width: 100%;
+                padding: 12px 16px;
+            }
+
             .nav-toggle {
                 display: block;
             }
 
+            .hero {
+                padding: 48px 16px;
+            }
+
             .hero-content h1 {
-                font-size: 2rem;
+                font-size: 32px;
+            }
+
+            .hero-content p {
+                font-size: 16px;
+            }
+
+            .container {
+                padding: 32px 16px;
+            }
+
+            .content-section {
+                padding: 24px;
+            }
+
+            .content-section h2 {
+                font-size: 24px;
             }
 
             .card-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .media-container {
+                padding: 32px;
             }
         }
     </style>
@@ -466,12 +502,37 @@
                 <li><a href="{{ route('kontak') }}" class="{{ request()->routeIs('kontak') ? 'active' : '' }}">
                     <i class="fas fa-phone"></i> Kontak
                 </a></li>
-                <li><a href="{{ route('struktur-organisasi') }}" class="{{ request()->routeIs('struktur-organisasi') ? 'active' : '' }}">
-                    <i class="fas fa-sitemap"></i> Struktur Organisasi
-                </a></li>
-                <li><a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }}">
-                    <i class="fas fa-sign-in-alt"></i> Login
-                </a></li>
+                @guest
+                    <li><a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }}">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a></li>
+                @else
+                    @php
+                        $dashboardRoute = 'home';
+                        $userRole = session('user_role');
+                        switch ($userRole) {
+                            case 1: $dashboardRoute = 'admin.dashboard'; break;
+                            case 2: $dashboardRoute = 'dokter.dashboard'; break;
+                            case 3: $dashboardRoute = 'perawat.dashboard'; break;
+                            case 4: $dashboardRoute = 'resepsionis.dashboard'; break;
+                            case 5: $dashboardRoute = 'pemilik.dashboard'; break;
+                        }
+                    @endphp
+                    <li>
+                        <a href="{{ route($dashboardRoute) }}">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('logout') }}"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                @endguest
             </ul>
         </div>
     </nav>
@@ -517,11 +578,9 @@
 
     <script>
         function toggleMenu() {
-            const navMenu = document.getElementById('navMenu');
-            navMenu.classList.toggle('active');
+            document.getElementById('navMenu').classList.toggle('active');
         }
 
-        // Auto-hide alerts after 5 seconds
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
                 var alerts = document.querySelectorAll('.alert');

@@ -60,40 +60,30 @@
         <i class="fas fa-map-marked-alt"></i>
         <p><strong>Google Maps Lokasi RS</strong></p>
         <p>Embed Google Maps di sini</p>
-        <!-- CONTOH PENGGUNAAN:
-        <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.xxx" 
-            width="100%" 
-            height="450" 
-            style="border:0; border-radius: 12px;" 
-            allowfullscreen="" 
-            loading="lazy">
-        </iframe>
-        -->
     </div>
 
     <!-- Form Kontak -->
     <div class="content-section">
         <h2>Kirim Pesan</h2>
-        <form style="max-width: 800px; margin: 0 auto;">
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Nama Lengkap *</label>
-                <input type="text" required style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border 0.3s;" placeholder="Masukkan nama lengkap Anda">
+        <form style="max-width: 720px; margin: 0 auto;">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary); font-size: 14px;">Nama Lengkap *</label>
+                <input type="text" required style="width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: border 0.2s; font-family: 'Inter', sans-serif;" placeholder="Masukkan nama lengkap Anda">
             </div>
             
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Email *</label>
-                <input type="email" required style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border 0.3s;" placeholder="nama@email.com">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary); font-size: 14px;">Email *</label>
+                <input type="email" required style="width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: border 0.2s; font-family: 'Inter', sans-serif;" placeholder="nama@email.com">
             </div>
             
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Nomor Telepon *</label>
-                <input type="tel" required style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border 0.3s;" placeholder="08xxxxxxxxxx">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary); font-size: 14px;">Nomor Telepon *</label>
+                <input type="tel" required style="width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: border 0.2s; font-family: 'Inter', sans-serif;" placeholder="08xxxxxxxxxx">
             </div>
             
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Subjek *</label>
-                <select required style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border 0.3s;">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary); font-size: 14px;">Subjek *</label>
+                <select required style="width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: border 0.2s; font-family: 'Inter', sans-serif; background: white;">
                     <option value="">-- Pilih Subjek --</option>
                     <option value="informasi">Informasi Umum</option>
                     <option value="jadwal">Jadwal Dokter</option>
@@ -103,13 +93,13 @@
                 </select>
             </div>
             
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Pesan *</label>
-                <textarea required rows="6" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border 0.3s; resize: vertical;" placeholder="Tulis pesan Anda di sini..."></textarea>
+            <div style="margin-bottom: 24px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary); font-size: 14px;">Pesan *</label>
+                <textarea required rows="6" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: border 0.2s; resize: vertical; font-family: 'Inter', sans-serif;" placeholder="Tulis pesan Anda di sini..."></textarea>
             </div>
             
-            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem;">
-                <i class="fas fa-paper-plane"></i> Kirim Pesan
+            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 15px; padding: 14px;">
+                Kirim Pesan
             </button>
         </form>
     </div>
@@ -123,41 +113,41 @@
                     <i class="fab fa-facebook" style="color: #1877f2;"></i>
                 </div>
                 <h3>Facebook</h3>
-                <p>@RSHPUnair</p>
-                <a href="#" class="btn btn-secondary" style="margin-top: 1rem;">Kunjungi</a>
+                <p style="margin-bottom: 16px;">@RSHPUnair</p>
+                <a href="#" class="btn btn-secondary">Kunjungi</a>
             </div>
             <div class="card" style="text-align: center;">
                 <div class="card-icon">
                     <i class="fab fa-instagram" style="color: #e4405f;"></i>
                 </div>
                 <h3>Instagram</h3>
-                <p>@rshp_unair</p>
-                <a href="#" class="btn btn-secondary" style="margin-top: 1rem;">Kunjungi</a>
+                <p style="margin-bottom: 16px;">@rshp_unair</p>
+                <a href="#" class="btn btn-secondary">Kunjungi</a>
             </div>
             <div class="card" style="text-align: center;">
                 <div class="card-icon">
                     <i class="fab fa-twitter" style="color: #1da1f2;"></i>
                 </div>
                 <h3>Twitter</h3>
-                <p>@RSHPUnair</p>
-                <a href="#" class="btn btn-secondary" style="margin-top: 1rem;">Kunjungi</a>
+                <p style="margin-bottom: 16px;">@RSHPUnair</p>
+                <a href="#" class="btn btn-secondary">Kunjungi</a>
             </div>
             <div class="card" style="text-align: center;">
                 <div class="card-icon">
                     <i class="fab fa-youtube" style="color: #ff0000;"></i>
                 </div>
                 <h3>YouTube</h3>
-                <p>RSHP Unair Official</p>
-                <a href="#" class="btn btn-secondary" style="margin-top: 1rem;">Kunjungi</a>
+                <p style="margin-bottom: 16px;">RSHP Unair Official</p>
+                <a href="#" class="btn btn-secondary">Kunjungi</a>
             </div>
         </div>
     </div>
 
     <!-- Emergency Contact -->
-    <div class="content-section" style="background: #ff6b6b; color: white; text-align: center;">
-        <h2 style="color: white;"><i class="fas fa-exclamation-triangle"></i> Kondisi Darurat?</h2>
-        <p style="font-size: 1.2rem; margin-bottom: 1rem;">Segera hubungi layanan gawat darurat kami</p>
-        <a href="tel:0315999111" class="btn btn-primary" style="background: white; color: #ff6b6b; font-size: 1.3rem; padding: 1rem 3rem;">
+    <div class="content-section" style="background: #fef2f2; border: 1px solid #fecaca; text-align: center;">
+        <h2 style="color: #991b1b;"><i class="fas fa-exclamation-triangle"></i> Kondisi Darurat?</h2>
+        <p style="font-size: 16px; margin-bottom: 20px; color: #991b1b;">Segera hubungi layanan gawat darurat kami</p>
+        <a href="tel:0315999111" class="btn" style="background: #dc2626; color: white; font-size: 16px; padding: 14px 32px;">
             <i class="fas fa-phone-alt"></i> (031) 5999111
         </a>
     </div>
@@ -166,8 +156,8 @@
 <style>
     input:focus, select:focus, textarea:focus {
         outline: none;
-        border-color: var(--primary-color) !important;
-        box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
 </style>
 @endsection

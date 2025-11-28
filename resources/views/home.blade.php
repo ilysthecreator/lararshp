@@ -7,20 +7,9 @@
     <div class="hero-content">
         <h1>Selamat Datang di RSHP UNAIR</h1>
         <p>Rumah Sakit Pendidikan Universitas Airlangga - Pelayanan Kesehatan Berkualitas dengan Sentuhan Akademis</p>
-        <a href="{{ route('layanan') }}" class="btn btn-primary">Lihat Layanan Kami</a>
+        <a href="{{ route('layanan') }}" class="btn btn-primary" style="margin-top: 24px; padding: 14px 32px;">Lihat Layanan Kami</a>
     </div>
 </div>
-
-<div class="container">
-    <!-- Video/Image Section -->
-    <div class="media-container media-container--media">
-        <i class="fas fa-image"></i>
-        <p><strong>Tempatkan Gambar atau Video Profil RS di sini</strong></p>
-        <p>Ukuran rekomendasi: 1920x1080px</p>
-        <video controls autoplay muted loop preload="metadata" playsinline style="width:100%; max-width:1920px; height:auto; aspect-ratio:16/9; border-radius:12px; display:block; margin:0 auto;">
-            <source src="{{ asset('Profil-RSHP.mp4') }}" type="video/mp4">
-        </video>
-    </div>
 
     <!-- Keunggulan -->
     <div class="content-section">
@@ -85,11 +74,11 @@
         </div>
     </div>
 
-    <!-- Image Placeholder for Facilities -->
+    <!-- Image Placeholder -->
     <div class="media-container">
         <i class="fas fa-camera"></i>
-        <p><strong>Galeri Fasilitas Rumah Sakit</strong></p>
-        <p>Tempatkan foto-foto fasilitas RS seperti ruang rawat inap, ruang operasi, laboratorium, dll.</p>
+        <p style="margin-top: 16px;"><strong>Galeri Fasilitas Rumah Sakit</strong></p>
+        <p style="margin-top: 8px;">Tempatkan foto-foto fasilitas RS seperti ruang rawat inap, ruang operasi, laboratorium, dll.</p>
     </div>
 
     <!-- Informasi Cepat -->
@@ -97,18 +86,27 @@
         <h2>Informasi Penting</h2>
         <div class="card-grid">
             <div class="card">
-                <h3><i class="fas fa-calendar-check"></i> Jam Operasional</h3>
-                <p>Poliklinik: Senin - Sabtu (08:00 - 16:00)</p>
-                <p>IGD: 24 Jam Setiap Hari</p>
+                <h3 style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <i class="fas fa-calendar-check" style="color: var(--primary); font-size: 24px;"></i> 
+                    Jam Operasional
+                </h3>
+                <p style="margin-bottom: 8px;"><strong>Poliklinik:</strong> Senin - Sabtu (08:00 - 16:00)</p>
+                <p><strong>IGD:</strong> 24 Jam Setiap Hari</p>
             </div>
             <div class="card">
-                <h3><i class="fas fa-ambulance"></i> Layanan Darurat</h3>
-                <p>Hubungi segera: (031) 5999000</p>
+                <h3 style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <i class="fas fa-ambulance" style="color: var(--primary); font-size: 24px;"></i> 
+                    Layanan Darurat
+                </h3>
+                <p style="margin-bottom: 8px;"><strong>Hubungi segera:</strong> (031) 5999000</p>
                 <p>Unit Gawat Darurat siap melayani Anda</p>
             </div>
             <div class="card">
-                <h3><i class="fas fa-notes-medical"></i> Pendaftaran</h3>
-                <p>Daftar online atau langsung di loket pendaftaran</p>
+                <h3 style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <i class="fas fa-notes-medical" style="color: var(--primary); font-size: 24px;"></i> 
+                    Pendaftaran
+                </h3>
+                <p style="margin-bottom: 8px;">Daftar online atau langsung di loket pendaftaran</p>
                 <p>Bawa kartu identitas dan kartu BPJS (jika ada)</p>
             </div>
         </div>

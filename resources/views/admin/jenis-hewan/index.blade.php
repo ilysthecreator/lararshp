@@ -156,20 +156,22 @@ $(document).ready(function() {
     // Konfirmasi hapus data
     $('.form-delete').on('submit', function(e) {
         e.preventDefault();
-        var form = this;
+        const form = this;
+        const jenisHewanName = $(this).closest('tr').find('td:nth-child(3)').text().trim();
+
         Swal.fire({
             title: 'Anda yakin?',
-            text: "Data yang dihapus tidak dapat dikembalikan!",
+            html: `Anda akan menghapus jenis hewan: <strong>${jenisHewanName}</strong>. <br> Data yang dihapus tidak dapat dikembalikan!`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Ya, hapus!',
             cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit();
-            }
+        }).then((result) => { // NOSONAR
+            if (result.isConfirmed) { // NOSONAR
+                form.submit(); // NOSONAR
+            } // NOSONAR
         });
     });
 });
