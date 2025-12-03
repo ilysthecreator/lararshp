@@ -95,6 +95,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/rekam-medis', [Dokter\RekamMedisController::class, 'store'])->name('rekam-medis.store');
         Route::get('/rekam-medis/{id}', [Dokter\RekamMedisController::class, 'show'])->name('rekam-medis.show');
         Route::get('/rekam-medis/{id}/edit', [Dokter\RekamMedisController::class, 'edit'])->name('rekam-medis.edit');
+        Route::put('/rekam-medis/{id}', [Dokter\RekamMedisController::class, 'update'])->name('rekam-medis.update');
         Route::delete('/rekam-medis/{id}', [Dokter\RekamMedisController::class, 'destroy'])->name('rekam-medis.destroy');
 
         // Rute untuk Profil Dokter
@@ -109,7 +110,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['isResepsionis'])->prefix('resepsionis')->name('resepsionis.')->group(function () {
         Route::get('/dashboard', [Resepsionis\DashboardController::class, 'index'])->name('dashboard');
-        // Tambahkan route resepsionis lainnya di sini
+        Route::get('/temu-dokter', [Resepsionis\TemuDokterController::class, 'index'])->name('temu-dokter.index');
+        Route::get('/temu-dokter/create', [Resepsionis\TemuDokterController::class, 'create'])->name('temu-dokter.create');
+        Route::post('/temu-dokter', [Resepsionis\TemuDokterController::class, 'store'])->name('temu-dokter.store');
+        Route::get('/temu-dokter/{id}/edit', [Resepsionis\TemuDokterController::class, 'edit'])->name('temu-dokter.edit');
+        Route::put('/temu-dokter/{id}', [Resepsionis\TemuDokterController::class, 'update'])->name('temu-dokter.update');
+        Route::delete('/temu-dokter/{id}', [Resepsionis\TemuDokterController::class, 'destroy'])->name('temu-dokter.destroy');
     });
 
     Route::middleware(['isPemilik'])->prefix('pemilik')->name('pemilik.')->group(function () {

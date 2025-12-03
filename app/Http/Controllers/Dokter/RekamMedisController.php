@@ -91,7 +91,76 @@ class RekamMedisController extends Controller
     }
     public function edit($id)
     {
-        return redirect()->route('dokter.rekam-medis.index')->with('info', 'Fitur edit rekam medis sedang dalam pengembangan.');
+        // Ambil data rekam medis beserta detailnya
+        $rekamMedis = RekamMedis::with('detailRekamMedis.kodeTindakan')->findOrFail($id);
+        
+        // Data pendukung untuk dropdown
+        $pasien = Pet::with('pemilik.user')->get();
+        $tindakan = KodeTindakan::orderBy('deskripsi_tindakan_terapi')->get();
+
+        return view('dokter.rekam-medis.edit', compact('rekamMedis', 'pasien', 'tindakan'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'idpet' => 'required|exists:pet,idpet',
+            'tgl_periksa' => 'required|date',
+            'anamnesa' => 'required|string',
+            'diagnosa' => 'required|string|max:255',
+            'keterangan' => 'nullable|string',
+            'tindakan' => 'required|array',
+            'tindakan.*.id' => 'required|exists:kode_tindakan_terapi,idkode_tindakan_terapi',
+            'tindakan.*.detail_id' => 'nullable|exists:detail_rekam_medis,iddetail_rekam_medis',
+            'tindakan.*.jumlah' => 'required|integer|min:1',
+            'tindakan.*.keterangan' => 'nullable|string',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $rekamMedis = RekamMedis::findOrFail($id);
+
+            // 1. Update Data Utama
+            $rekamMedis->update([
+                'idpet' => $request->idpet,
+                'tgl_periksa' => $request->tgl_periksa,
+                'anamnesa' => $request->anamnesa,
+                'diagnosa' => $request->diagnosa,
+                'keterangan' => $request->keterangan,
+            ]);
+
+            // 2. Update Detail Tindakan (Strategi Cerdas)
+            $existingDetailIds = $rekamMedis->detailRekamMedis->pluck('iddetail_rekam_medis')->toArray();
+            $submittedDetailIds = [];
+
+            foreach ($request->tindakan as $item) {
+                $detailId = $item['detail_id'] ?? null;
+
+                if ($detailId) {
+                    $submittedDetailIds[] = (int)$detailId;
+                }
+
+                DetailRekamMedis::updateOrCreate(
+                    ['iddetail_rekam_medis' => $detailId], // Kunci untuk mencari
+                    [ // Data untuk update atau create
+                        'idrekam_medis' => $rekamMedis->idrekam_medis,
+                        'idkode_tindakan_terapi' => $item['id'],
+                        'jumlah' => $item['jumlah'],
+                        'keterangan' => $item['keterangan'],
+                    ]
+                );
+            }
+            // Hapus detail yang tidak ada lagi di form submission
+            $idsToDelete = array_diff($existingDetailIds, $submittedDetailIds);
+            DetailRekamMedis::destroy($idsToDelete);
+
+            DB::commit();
+
+            return redirect()->route('dokter.rekam-medis.index')->with('success', 'Rekam medis berhasil diperbarui.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal memperbarui data: ' . $e->getMessage())->withInput();
+        }
     }
     public function destroy($id)
     {
