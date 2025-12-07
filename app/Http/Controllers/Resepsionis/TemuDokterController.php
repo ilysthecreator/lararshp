@@ -1,61 +1,73 @@
 <?php
-
 namespace App\Http\Controllers\Resepsionis;
 
 use App\Http\Controllers\Controller;
 use App\Models\TemuDokter;
+use App\Models\RoleUser;
 use App\Models\Pet;
-use App\Models\Dokter;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class TemuDokterController extends Controller
 {
     public function index()
     {
-        $temuDokter = TemuDokter::with(['pet.pemilik.user', 'dokter.user'])->latest()->paginate(10);
+        $temuDokter = TemuDokter::with(['dokterRoleUser.user', 'pet.pemilik.user'])
+            ->orderBy('waktu_daftar', 'desc')
+            ->paginate(10);
+            
         return view('resepsionis.temu-dokter.index', compact('temuDokter'));
     }
 
     public function create()
     {
+        // Ambil list dokter dari tabel role_user (idrole = 2 adalah Dokter)
+        $dokters = RoleUser::with('user')->where('idrole', 2)->get();
         $pets = Pet::with('pemilik.user')->get();
-        $dokters = Dokter::with('user')->get();
-        return view('resepsionis.temu-dokter.create', compact('pets', 'dokters'));
+        
+        return view('resepsionis.temu-dokter.create', compact('dokters', 'pets'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'idpet' => 'required|exists:pet,idpet',
-            'iddokter' => 'required|exists:dokter,iddokter',
+            'idrole_user' => 'required', // ID Dokter dari role_user
+            'idpet' => 'required',
             'tgl_temu' => 'required|date',
             'jam_temu' => 'required',
-            'keluhan' => 'nullable|string',
+            // 'keluhan' dihapus karena tidak ada di DB
         ]);
 
-        TemuDokter::create($request->all());
+        // Gabungkan Tanggal dan Jam untuk kolom waktu_daftar
+        $waktuDaftar = $request->tgl_temu . ' ' . $request->jam_temu;
 
-        return redirect()->route('resepsionis.temu-dokter.index')->with('success', 'Jadwal temu berhasil dibuat.');
+        // Auto Generate No Urut (Per hari)
+        $countHariIni = TemuDokter::whereDate('waktu_daftar', $request->tgl_temu)->count();
+        $noUrut = $countHariIni + 1;
+
+        TemuDokter::create([
+            'idrole_user' => $request->idrole_user,
+            'idpet' => $request->idpet,
+            'waktu_daftar' => $waktuDaftar,
+            'no_urut' => $noUrut,
+            'status' => '1', // Asumsi: 1 = Menunggu/Aktif
+        ]);
+
+        return redirect()->route('resepsionis.temu-dokter.index')->with('success', 'Jadwal berhasil dibuat. No Urut: ' . $noUrut);
     }
-
-    public function edit($id)
-    {
-        $temu = TemuDokter::findOrFail($id);
-        $pets = Pet::with('pemilik.user')->get();
-        $dokters = Dokter::with('user')->get();
-        return view('resepsionis.temu-dokter.edit', compact('temu', 'pets', 'dokters'));
-    }
-
+    
     public function update(Request $request, $id)
     {
-        $temu = TemuDokter::findOrFail($id);
-        $temu->update($request->all());
-        return redirect()->route('resepsionis.temu-dokter.index')->with('success', 'Jadwal temu berhasil diperbarui.');
+        // Gunakan idreservasi_dokter
+        $temu = TemuDokter::where('idreservasi_dokter', $id)->firstOrFail();
+        $temu->update(['status' => $request->status]);
+        return back()->with('success', 'Status diperbarui');
     }
 
     public function destroy($id)
     {
-        TemuDokter::findOrFail($id)->delete();
-        return redirect()->route('resepsionis.temu-dokter.index')->with('success', 'Jadwal dihapus.');
+        $temu = TemuDokter::where('idreservasi_dokter', $id)->firstOrFail();
+        $temu->delete();
+        return back()->with('success', 'Data dihapus');
     }
 }

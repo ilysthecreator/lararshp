@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\Resepsionis;
 
 use App\Http\Controllers\Controller;
-use App\Models\Dokter;
 use App\Models\Pemilik;
 use App\Models\Pet;
 use App\Models\TemuDokter;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -15,10 +14,19 @@ class DashboardController extends Controller
     {
         $totalPemilik = Pemilik::count();
         $totalPet = Pet::count();
-        $totalDokter = \App\Models\User::whereHas('roleUser', fn($q) => $q->where('idrole', 2))->count(); // Role ID 2 for Dokter
+        
+        // Hitung User yang punya Role Dokter (idrole 2)
+        $totalDokter = User::whereHas('roleUser', function($q) {
+            $q->where('idrole', 2);
+        })->count();
+        
         $totalJanjiTemu = TemuDokter::count();
 
-        $janjiTemuTerbaru = TemuDokter::with(['pet.pemilik.user', 'dokter.user'])->orderBy('tgl_temu', 'desc')->orderBy('jam_temu', 'desc')->take(10)->get();
+        // Fix: Order by 'waktu_daftar' sesuai kolom DB
+        $janjiTemuTerbaru = TemuDokter::with(['pet.pemilik.user', 'dokterRoleUser.user'])
+            ->orderBy('waktu_daftar', 'desc')
+            ->take(10)
+            ->get();
 
         return view('resepsionis.dashboard', compact('totalPemilik', 'totalPet', 'totalDokter', 'totalJanjiTemu', 'janjiTemuTerbaru'));
     }

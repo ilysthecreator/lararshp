@@ -339,7 +339,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.user.index') }}" class="{{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
                     <i class="fas fa-users"></i>
                     <span>Data User</span>
                 </a>
