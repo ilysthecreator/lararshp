@@ -12,11 +12,13 @@ class DetailRekamMedis extends Model
     protected $table = 'detail_rekam_medis';
     protected $primaryKey = 'iddetail_rekam_medis';
 
+    // PENTING: Matikan timestamps karena tabel ini tidak punya kolom created_at/updated_at
+    public $timestamps = false;
+
     protected $fillable = [
         'idrekam_medis',
         'idkode_tindakan_terapi',
-        'jumlah',
-        'keterangan',
+        'detail' // Kolom ini menampung string gabungan (jumlah + keterangan)
     ];
 
     public function rekamMedis()

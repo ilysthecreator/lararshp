@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-// --- Imports Controller ---
-
 // Site & Auth
 use App\Http\Controllers\Site\SiteController;
 use App\Http\Controllers\Auth\LoginController;
@@ -38,12 +36,10 @@ use App\Http\Controllers\Resepsionis\TemuDokterController;
 
 // Pemilik (User/Customer) Controllers
 use App\Http\Controllers\Pemilik\DashboardController as PemilikDashboard;
+use App\Http\Controllers\Pemilik\JadwalController;
+use App\Http\Controllers\Pemilik\RiwayatController;
+use App\Http\Controllers\Pemilik\ProfilController as PemilikProfilController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
 
 // --- Public Routes ---
 Route::get('/', [SiteController::class, 'home'])->name('home');
@@ -67,7 +63,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
 
         // Master Data User & Role
-        Route::resource('user', UserController::class);
+        Route::resource('users', UserController::class);
+        Route::get('user', function () { return redirect()->route('admin.users.index'); })->name('user.index');
         Route::resource('role', RoleController::class);
 
         // Data Klinik (Admin View)
@@ -94,7 +91,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['isPerawat'])->prefix('perawat')->name('perawat.')->group(function () {
         Route::get('/dashboard', [PerawatDashboard::class, 'index'])->name('dashboard');
-        // Tambahkan route khusus perawat lainnya di sini jika ada
+        Route::get('/pasien', [App\Http\Controllers\Perawat\PasienController::class, 'index'])->name('pasien.index');
+        Route::resource('rekam-medis', App\Http\Controllers\Perawat\RekamMedisController::class);
+        Route::get('/profile', [App\Http\Controllers\Perawat\ProfileController::class, 'show'])->name('profile.show');
     });
 
     Route::middleware(['isResepsionis'])->prefix('resepsionis')->name('resepsionis.')->group(function () {
@@ -102,11 +101,14 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('pemilik', ResepsionisPemilikController::class);
         Route::resource('pet', ResepsionisPetController::class);
         Route::resource('temu-dokter', TemuDokterController::class);
+        Route::resource('temu-dokter', TemuDokterController::class)->parameters(['temu-dokter' => 'id']);
     });
 
     Route::middleware(['isPemilik'])->prefix('pemilik')->name('pemilik.')->group(function () {
-        Route::get('/dashboard', [PemilikDashboard::class, 'index'])->name('dashboard');
-        // Tambahkan route riwayat berobat hewan sendiri di sini
+        Route::get('/dashboard', [App\Http\Controllers\Pemilik\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/jadwal', [App\Http\Controllers\Pemilik\JadwalController::class, 'index'])->name('jadwal.index');
+        Route::get('/riwayat', [App\Http\Controllers\Pemilik\RiwayatController::class, 'index'])->name('riwayat.index');
+        Route::get('/riwayat/{id}', [App\Http\Controllers\Pemilik\RiwayatController::class, 'show'])->name('riwayat.show');
+        Route::get('/profil', [App\Http\Controllers\Pemilik\ProfilController::class, 'index'])->name('profil.index');
     });
-
 });

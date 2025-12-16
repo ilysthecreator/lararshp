@@ -13,9 +13,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Redirect ke dashboard jika sudah login
         if (auth()->check()) {
-            // Hitung statistik
             $stats = [
                 'jenis_hewan' => JenisHewan::count(),
                 'pet' => Pet::count(),

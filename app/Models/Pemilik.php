@@ -8,6 +8,10 @@ class Pemilik extends Model
 {
     protected $table = 'pemilik';
     protected $primaryKey = 'idpemilik';
+    
+    // WAJIB: Matikan timestamps agar tidak error "Column not found: updated_at"
+    public $timestamps = false; 
+
     protected $fillable = ['iduser', 'no_wa', 'alamat'];
 
     public function user()

@@ -12,23 +12,31 @@ class RekamMedis extends Model
     protected $table = 'rekam_medis';
     protected $primaryKey = 'idrekam_medis';
 
+    // PENTING: Matikan timestamps otomatis agar Laravel tidak mencari kolom 'updated_at'
+    public $timestamps = false;
+
     protected $fillable = [
-        'idpet',
-        'iddokter',
-        'tgl_periksa',
+        'idreservasi_dokter',
+        'dokter_pemeriksa',
         'anamnesa',
         'diagnosa',
-        'keterangan',
+        'temuan_klinis',
+        'created_at' // Kita isi manual di controller
     ];
+
+    public function temuDokter()
+    {
+        return $this->belongsTo(TemuDokter::class, 'idreservasi_dokter', 'idreservasi_dokter');
+    }
 
     public function pet()
     {
-        return $this->belongsTo(Pet::class, 'idpet', 'idpet');
+        return $this->hasOneThrough(Pet::class, TemuDokter::class, 'idreservasi_dokter', 'idpet', 'idreservasi_dokter', 'idpet');
     }
 
     public function dokter()
     {
-        return $this->belongsTo(Dokter::class, 'iddokter', 'iddokter');
+        return $this->belongsTo(RoleUser::class, 'dokter_pemeriksa', 'idrole_user');
     }
 
     public function detailRekamMedis()

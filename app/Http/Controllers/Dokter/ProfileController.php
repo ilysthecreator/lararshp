@@ -18,7 +18,7 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::user()->load('dokter');
-        return view('dokter.profile.show', compact('user')); // Path sudah benar
+        return view('dokter.profile', compact('user')); // Path sudah benar
     }
 
     /**

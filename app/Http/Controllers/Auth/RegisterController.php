@@ -4,69 +4,62 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Pemilik; // Tambahkan Model Pemilik
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB; // Tambahkan DB
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+    // Redirect setelah register sukses
+    protected $redirectTo = '/pemilik/dashboard';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // Gunakan 'nama' bukan 'name' sesuai database
+            'nama' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:user'], // Tabel 'user'
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            // Validasi tambahan
+            'alamat' => ['required', 'string'],
+            'no_wa' => ['required', 'string', 'max:20'],
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        return DB::transaction(function () use ($data) {
+            // 1. Simpan ke tabel User
+            $user = User::create([
+                'nama' => $data['nama'], // Sesuai kolom DB 'nama'
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+            ]);
+
+            // 2. Beri Role Pemilik (ID 5)
+            DB::table('role_user')->insert([
+                'iduser' => $user->iduser,
+                'idrole' => 5, // 5 = Pemilik
+                'status' => 1
+            ]);
+
+            // 3. Simpan Detail ke tabel Pemilik
+            Pemilik::create([
+                'iduser' => $user->iduser,
+                'alamat' => $data['alamat'],
+                'no_wa' => $data['no_wa'],
+            ]);
+
+            return $user;
+        });
     }
 }
